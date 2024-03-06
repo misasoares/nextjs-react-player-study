@@ -19,11 +19,20 @@ export default function Home() {
 
   const [progress, setProgress] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState(false);
-
+  const [play, setPlay] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(30);
+  const [volumeVideo, setVolumeVideo] = useState<number>(0.5);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setVolume(newValue as number);
+  };
+
+  const handleVolume = (action: string) => {
+    console.log(volume);
+    action === "turn up"
+      ? setVolumeVideo(volumeVideo + 0.1)
+      : setVolumeVideo(volumeVideo - 0.1);
+    console.log(volume);
   };
 
   return (
@@ -99,6 +108,65 @@ export default function Home() {
             <ReactPlayer height={200} width={360} url={url} />
           </Grid>
         ))}
+
+        <Grid item xs={12}>
+          <Typography variant="h5">Video em loop e velocidade 2x</Typography>
+        </Grid>
+        <Grid item xs={12} className="w-full flex justify-center">
+          <ReactPlayer
+            playing
+            loop
+            volume={0}
+            playbackRate={2}
+            url="https://www.youtube.com/watch?v=yXGaDsFzQY0"
+          />
+        </Grid>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Typography variant="h5">Video com botões</Typography>
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        className="w-full flex flex-col items-center justify-center"
+      >
+        <div style={{ pointerEvents: "none" }}>
+          <ReactPlayer
+            playing={play}
+            volume={volumeVideo}
+            url="https://www.youtube.com/watch?v=dfDgs0Ive2Q"
+          />
+        </div>
+        <div
+          className="flex justify-between flex-row mt-3"
+          style={{ width: "640px" }}
+        >
+          <Button
+            variant="outlined"
+            onClick={() => setPlay(!play)}
+            color="secondary"
+          >
+            {play ? "Pause" : "Play"}
+          </Button>
+          <div className="flex flex-row items-center justify-center gap-5">
+            <p>Volume</p>
+            <Button
+              variant="outlined"
+              onClick={() => handleVolume("turn up")}
+              color="success"
+            >
+              +
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => handleVolume("turn down")}
+              color="success"
+            >
+              -
+            </Button>
+          </div>
+        </div>
       </Grid>
     </main>
   );
