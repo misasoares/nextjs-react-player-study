@@ -28,11 +28,9 @@ export default function Home() {
   };
 
   const handleVolume = (action: string) => {
-    console.log(volume);
     action === "turn up"
       ? setVolumeVideo(volumeVideo + 0.1)
       : setVolumeVideo(volumeVideo - 0.1);
-    console.log(volume);
   };
 
   return (
@@ -61,29 +59,37 @@ export default function Home() {
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
           />
-          <Button variant="contained"></Button>
         </Grid>
-        <Grid item xs={12}>
-          {isPlaying ? <CheckCircle color="success" /> : <CheckOutlined />}
-        </Grid>
-        <Grid item xs={12}>
-          <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-            <VolumeDown />
-            <Slider
-              aria-label="Volume"
-              value={volume}
-              onChange={handleChange}
-            />
-            <VolumeUp />
-          </Stack>
-        </Grid>
-        <Grid item xs={12}>
-          <LinearProgress
-            color="error"
-            variant="determinate"
-            value={progress * 100}
-          />
-        </Grid>
+        <div className="w-full flex justify-center">
+          <div className="w-2/4">
+            <Grid item xs={4}>
+              {isPlaying ? <CheckCircle color="success" /> : <CheckOutlined />}
+            </Grid>
+            <Grid item xs={12}>
+              <Stack
+                spacing={2}
+                direction="row"
+                sx={{ mb: 1 }}
+                alignItems="center"
+              >
+                <VolumeDown />
+                <Slider
+                  aria-label="Volume"
+                  value={volume}
+                  onChange={handleChange}
+                />
+                <VolumeUp />
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <LinearProgress
+                color="error"
+                variant="determinate"
+                value={progress * 100}
+              />
+            </Grid>
+          </div>
+        </div>
 
         <Grid item xs={12}>
           <Typography variant="h5">Videos do youtube - hover</Typography>
@@ -95,8 +101,8 @@ export default function Home() {
               width={360}
               url={url}
               playing={activeIndex === index}
-              // onMouseEnter={() => setActiveIndex(index)}
-              // onMouseLeave={() => setActiveIndex(null)}
+              onMouseEnter={() => setActiveIndex(index)}
+              onMouseLeave={() => setActiveIndex(null)}
             />
           </Grid>
         ))}
@@ -151,13 +157,7 @@ export default function Home() {
           </Button>
           <div className="flex flex-row items-center justify-center gap-5">
             <p>Volume</p>
-            <Button
-              variant="outlined"
-              onClick={() => handleVolume("turn up")}
-              color="success"
-            >
-              +
-            </Button>
+
             <Button
               variant="outlined"
               onClick={() => handleVolume("turn down")}
@@ -165,8 +165,27 @@ export default function Home() {
             >
               -
             </Button>
+            <Button
+              variant="outlined"
+              onClick={() => handleVolume("turn up")}
+              color="success"
+            >
+              +
+            </Button>
           </div>
         </div>
+        <ReactPlayer
+          url="videos/exemplo1.mp4"
+          controls
+          config={{
+            file: {
+              attributes: {
+                onContextMenu: (e: any) => e.preventDefault(),
+                controlsList: "nodownload",
+              },
+            },
+          }}
+        />
       </Grid>
     </main>
   );
