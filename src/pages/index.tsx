@@ -6,8 +6,10 @@ import { Button, LinearProgress, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import ReactPlayer from "react-player";
+//import ReactPlayer from "react-player";
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState<null | number>(null);
@@ -15,6 +17,12 @@ export default function Home() {
     "https://www.youtube.com/watch?v=DfVhbfbubAE",
     "https://www.youtube.com/watch?v=dfDgs0Ive2Q",
     "https://www.youtube.com/watch?v=wmoCIHlA2bA",
+  ];
+
+  const navigationVimeoUrls = [
+    "https://vimeo.com/347152004",
+    "https://vimeo.com/82045045",
+    "https://vimeo.com/378840916",
   ];
 
   const [progress, setProgress] = useState<number>(0);
@@ -40,9 +48,6 @@ export default function Home() {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="h5">React Player</Typography>
-        </Grid>
-        <Grid item xs={12} className="w-full flex justify-center">
-          <Typography>Inicia o video ao abrir a página</Typography>
         </Grid>
 
         <Grid item xs={12} className="w-full flex justify-center">
@@ -109,9 +114,9 @@ export default function Home() {
         <Grid item xs={12}>
           <Typography variant="h5">Videos do vimeo</Typography>
         </Grid>
-        {navigationYoutubeUrls.map((url, index) => (
+        {navigationVimeoUrls.map((url, index) => (
           <Grid item xs={4} key={url + index}>
-            <ReactPlayer height={200} width={360} url={url} />
+            <ReactPlayer controls height={200} width={360} url={url} />
           </Grid>
         ))}
 
